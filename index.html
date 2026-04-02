@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOIR • Premium Virtual Piano</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&amp;display=swap');
+
+        :root {
+            --accent: #c9a66b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #f0f0f0;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 30px 20px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 700;
+            letter-spacing: -6px;
+            background: linear-gradient(90deg, #f0f0f0, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 15px 30px rgba(0, 0, 0, 0.85);
+            display: inline-block;
+            transform: perspective(600px) rotateX(12deg);
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            opacity: 0.75;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .piano-container {
+            max-width: 1380px;
+            margin: 0 auto;
+            perspective: 1400px;
+            perspective-origin: 50% 30%;
+        }
+
+        .piano {
+            display: flex;
+            height: 380px;
+            background: linear-gradient(180deg, #1c1c1c 0%, #111111 100%);
+            border: 22px solid #161616;
+            border-radius: 28px;
+            box-shadow: 
+                0 35px 60px -15px rgba(0, 0, 0, 0.95),
+                inset 0 15px 30px rgba(255,255,255,0.06),
+                0 0 120px rgba(201, 166, 107, 0.18);
+            position: relative;
+            overflow: hidden;
+            padding: 18px 18px 0;
+            transform: rotateX(8deg);
+            transition: transform 0.4s ease;
+        }
+
+        .key {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            transition: all 0.12s cubic-bezier(0.25, 0.1, 0.25, 1);
+            position: relative;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 
+                6px 18px 12px -6px rgba(0, 0, 0, 0.85),
+                inset 0 18px 24px rgba(255,255,255,0.75),
+                inset 0 -10px 18px rgba(0,0,0,0.6);
+        }
+
+        .white-key {
+            flex: 1;
+            min-width: 52px;
+            max-width: 52px;
+            height: 100%;
+            background: linear-gradient(180deg, #f5f5f5 4%, #e8e8e8 98%);
+            color: #111111;
+            border: 4px solid #1f1f1f;
+            border-top: none;
+            z-index: 2;
+        }
+
+        .black-key {
+            width: 36px;
+            height: 228px;
+            background: linear-gradient(180deg, #222222 4%, #0d0d0d 98%);
+            color: #f0f0f0;
+            border: 4px solid #000;
+            margin-left: -18px;
+            margin-top: -210px;
+            z-index: 10;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 
+                4px 14px 10px -4px rgba(0, 0, 0, 0.9),
+                inset 0 14px 18px rgba(255,255,255,0.18);
+        }
+
+        .key-label {
+            text-align: center;
+            width: 100%;
+            padding-bottom: 22px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            z-index: 1;
+        }
+
+        .kb-label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            opacity: 0.65;
+            letter-spacing: 2px;
+            margin-top: 6px;
+        }
+
+        .black-key .key-label {
+            padding-bottom: 14px;
+            font-size: 1.05rem;
+        }
+
+        /* 3D Press Animation */
+        .key:active,
+        .key.pressed {
+            transform: translateY(18px) rotateX(6deg);
+            box-shadow: 
+                3px 6px 8px -3px rgba(0, 0, 0, 0.7),
+                inset 0 8px 14px rgba(0,0,0,0.7);
+            filter: brightness(0.92);
+        }
+
+        /* Glassmorphism Hover Effect */
+        .key:hover {
+            filter: brightness(1.18);
+            transform: translateY(-8px) rotateX(4deg);
+            box-shadow: 
+                8px 22px 18px -8px rgba(201, 166, 107, 0.45),
+                inset 0 18px 24px rgba(255,255,255,0.95);
+        }
+
+        .white-key:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(232,232,232,0.85));
+            backdrop-filter: blur(14px);
+        }
+
+        .black-key:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(13,13,13,0.95));
+            backdrop-filter: blur(14px);
+        }
+
+        .controls {
+            max-width: 1380px;
+            margin: 40px auto 0;
+            background: rgba(20, 20, 20, 0.85);
+            border: 2px solid #222222;
+            border-radius: 24px;
+            box-shadow: 
+                0 25px 50px -15px rgba(0, 0, 0, 0.9),
+                inset 0 2px 0 rgba(255,255,255,0.08);
+            padding: 32px;
+            backdrop-filter: blur(20px);
+        }
+
+        .tune-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        textarea {
+            background: rgba(15, 15, 15, 0.95);
+            border: 3px solid #2a2a2a;
+            border-radius: 16px;
+            color: #f0f0f0;
+            font-family: 'Inter', monospace;
+            font-size: 1.15rem;
+            padding: 22px;
+            resize: none;
+            height: 128px;
+            box-shadow: inset 0 8px 16px rgba(0,0,0,0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 
+                0 0 0 5px rgba(201, 166, 107, 0.25),
+                inset 0 8px 16px rgba(0,0,0,0.6);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-3d {
+            padding: 18px 36px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 
+                0 14px 0 #1a1a1a,
+                0 18px 24px rgba(0, 0, 0, 0.7);
+            background: linear-gradient(180deg, #222222 0%, #161616 100%);
+            color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 18px 0 #1a1a1a,
+                0 24px 30px rgba(201, 166, 107, 0.35);
+            /* Glassmorphism on hover */
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(16px);
+        }
+
+        .btn-3d:active {
+            transform: translateY(9px);
+            box-shadow: 
+                0 5px 0 #1a1a1a,
+                0 10px 16px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn-play {
+            background: linear-gradient(180deg, var(--accent), #b38c4f);
+            color: #111111;
+            font-weight: 700;
+        }
+
+        .instructions {
+            margin-top: 20px;
+            font-size: 1rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .instructions span {
+            background: #1f1f1f;
+            padding: 6px 18px;
+            border-radius: 9999px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        @media (max-width: 1100px) {
+            .piano {
+                height: 310px;
+                transform: rotateX(6deg);
+            }
+            .white-key {
+                min-width: 42px;
+                max-width: 42px;
+            }
+            .black-key {
+                width: 29px;
+                height: 186px;
+                margin-top: -172px;
+                margin-left: -14.5px;
+            }
+            .key-label {
+                font-size: 1.05rem;
+                padding-bottom: 18px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .piano-container {
+                overflow-x: auto;
+                padding: 0 10px;
+            }
+            .piano {
+                width: max-content;
+                margin: 0 auto;
+            }
+            .controls {
+                padding: 24px;
+            }
+            .btn-row {
+                flex-direction: column;
+            }
+        }
+
+        .playing {
+            animation: keyPulse 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes keyPulse {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.4); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">NOIR</div>
+        <div class="subtitle">PREMIUM VIRTUAL PIANO • REAL • SOOTHING</div>
+    </header>
+
+    <div class="piano-container">
+        <div id="piano" class="piano"></div>
+    </div>
+
+    <div class="controls">
+        <div class="tune-box">
+            <h2>PASTE TUNE → AUTOPLAY</h2>
+            <textarea id="tune-input" placeholder="C4 E4 G4 B4 C5&#10;C#4 F#4 A#4 D#5&#10;or any valid note (C4, Db5, etc.)"></textarea>
+            
+            <div class="btn-row">
+                <button id="play-btn" class="btn-3d btn-play">
+                    ▶️ PLAY TUNE
+                </button>
+                <button id="stop-btn" class="btn-3d">
+                    ⏹ INSTANT STOP
+                </button>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <strong>PLAY WITH:</strong>
+            <span>MOUSE CLICK on keys</span>
+            <span>KEYBOARD (letters printed on keys)</span>
+            <span>3D glass-hover • High-fidelity reverb</span>
+            <span>New tune instantly kills previous (zero ghost notes)</span>
+        </div>
+    </div>
+
+    <script>
+        // ====================== PIANO KEY DATA ======================
+        const pianoKeysData = [
+            { note: "C4",  kb: "z", sharp: false, display: "C" },
+            { note: "C#4", kb: "s", sharp: true,  display: "C#" },
+            { note: "D4",  kb: "x", sharp: false, display: "D" },
+            { note: "D#4", kb: "d", sharp: true,  display: "D#" },
+            { note: "E4",  kb: "c", sharp: false, display: "E" },
+            { note: "F4",  kb: "v", sharp: false, display: "F" },
+            { note: "F#4", kb: "g", sharp: true,  display: "F#" },
+            { note: "G4",  kb: "b", sharp: false, display: "G" },
+            { note: "G#4", kb: "h", sharp: true,  display: "G#" },
+            { note: "A4",  kb: "n", sharp: false, display: "A" },
+            { note: "A#4", kb: "j", sharp: true,  display: "A#" },
+            { note: "B4",  kb: "m", sharp: false, display: "B" },
+            { note: "C5",  kb: "q", sharp: false, display: "C" },
+            { note: "C#5", kb: "2", sharp: true,  display: "C#" },
+            { note: "D5",  kb: "w", sharp: false, display: "D" },
+            { note: "D#5", kb: "3", sharp: true,  display: "D#" },
+            { note: "E5",  kb: "e", sharp: false, display: "E" },
+            { note: "F5",  kb: "r", sharp: false, display: "F" },
+            { note: "F#5", kb: "5", sharp: true,  display: "F#" },
+            { note: "G5",  kb: "t", sharp: false, display: "G" },
+            { note: "G#5", kb: "6", sharp: true,  display: "G#" },
+            { note: "A5",  kb: "y", sharp: false, display: "A" },
+            { note: "A#5", kb: "7", sharp: true,  display: "A#" },
+            { note: "B5",  kb: "u", sharp: false, display: "B" },
+            { note: "C6",  kb: "i", sharp: false, display: "C" }
+        ];
+
+        // ====================== AUDIO ENGINE ======================
+        let audioContext;
+        let reverbNode;
+        let masterGain;
+        let activeSources = [];     // For instant kill on new tune
+        let currentTimeouts = [];
+        let isPlayingTune = false;
+
+        function initAudio() {
+            if (audioContext) return;
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // Master gain
+            masterGain = audioContext.createGain();
+            masterGain.gain.value = 0.92;
+
+            // Create high-quality reverb (hall-style, soothing)
+            const reverbLength = audioContext.sampleRate * 2.8; // 2.8s tail
+            const impulse = audioContext.createBuffer(2, reverbLength, audioContext.sampleRate);
+            
+            for (let channel = 0; channel < 2; channel++) {
+                const data = impulse.getChannelData(channel);
+                for (let i = 0; i < reverbLength; i++) {
+                    // Decaying noise for natural reverb
+                    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / reverbLength, 2.8);
+                }
+            }
+            
+            reverbNode = audioContext.createConvolver();
+            reverbNode.buffer = impulse;
+
+            // Connect reverb to master
+            reverbNode.connect(masterGain);
+            masterGain.connect(audioContext.destination);
+        }
+
+        function noteToFrequency(note) {
+            const noteNames = { 'C': 0, 'C#': 1, 'DB': 1, 'D': 2, 'D#': 3, 'EB': 3, 'E': 4, 'F': 5, 'F#': 6, 'GB': 6, 'G': 7, 'G#': 8, 'AB': 8, 'A': 9, 'A#': 10, 'BB': 10, 'B': 11 };
+            
+            const match = note.match(/^([A-G]#?|B[♭b]?)([0-8])$/i);
+            if (!match) return 440;
+            
+            let noteName = match[1].toUpperCase().replace('♭', 'B');
+            if (noteName === 'DB') noteName = 'C#';
+            if (noteName === 'EB') noteName = 'D#';
+            if (noteName === 'GB') noteName = 'F#';
+            if (noteName === 'AB') noteName = 'G#';
+            if (noteName === 'BB') noteName = 'A#';
+            
+            const octave = parseInt(match[2]);
+            const semitone = noteNames[noteName];
+            if (semitone === undefined) return 440;
+            
+            const midi = (octave + 1) * 12 + semitone;
+            return 440 * Math.pow(2, (midi - 69) / 12);
+        }
+
+        // High-fidelity piano note with realistic envelope + slight reverb
+        function playNote(noteName, duration = 480) {
+            initAudio();
+            const ctx = audioContext;
+            const now = ctx.currentTime;
+            const freq = noteToFrequency(noteName);
+            if (!freq) return;
+
+            // Primary oscillator (warm triangle)
+            const osc = ctx.createOscillator();
+            osc.frequency.setValueAtTime(freq, now);
+            osc.type = 'triangle';
+
+            // Richness layer (slightly detuned triangle)
+            const osc2 = ctx.createOscillator();
+            osc2.frequency.setValueAtTime(freq * 1.0035, now);
+            osc2.type = 'triangle';
+
+            // Low-pass filter for body
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(3200, now);
+            filter.Q.setValueAtTime(0.6, now);
+
+            // Dry / Wet split
+            const dryGain = ctx.createGain();
+            dryGain.gain.setValueAtTime(0.72, now);
+
+            const wetGain = ctx.createGain();
+            wetGain.gain.setValueAtTime(0.28, now);   // subtle reverb
+
+            // Master envelope for this note
+            const envelope = ctx.createGain();
+            envelope.gain.setValueAtTime(0, now);
+
+            // Connect chain
+            osc.connect(filter);
+            osc2.connect(filter);
+            filter.connect(dryGain);
+            filter.connect(reverbNode);
+            dryGain.connect(envelope);
+            wetGain.connect(envelope);
+            envelope.connect(masterGain);
+
+            // Realistic piano ADSR (fast attack, smooth decay, soothing release)
+            envelope.gain.linearRampToValueAtTime(1, now + 0.006);      // attack
+            envelope.gain.linearRampToValueAtTime(0.38, now + 0.14);    // decay
+            envelope.gain.exponentialRampToValueAtTime(0.001, now + duration / 1000);
+
+            // Start & schedule stop
+            osc.start(now);
+            osc2.start(now);
+            osc.stop(now + duration / 1000 + 1.2);
+            osc2.stop(now + duration / 1000 + 1.2);
+
+            // Store for instant kill capability
+            activeSources.push(osc, osc2, envelope);
+
+            return { osc, osc2, envelope };
+        }
+
+        function pressKeyVisual(note) {
+            const keys = document.querySelectorAll(`[data-note="${note}"]`);
+            if (keys.length) {
+                const key = keys[0];
+                key.classList.add('pressed', 'playing');
+                setTimeout(() => {
+                    key.classList.remove('pressed', 'playing');
+                }, 220);
+            }
+        }
+
+        function triggerNote(note) {
+            playNote(note);
+            pressKeyVisual(note);
+        }
+
+        // ====================== BUILD PIANO ======================
+        function buildPiano() {
+            const piano = document.getElementById('piano');
+            piano.innerHTML = '';
+
+            pianoKeysData.forEach(keyData => {
+                const key = document.createElement('div');
+                key.className = keyData.sharp ? 'key black-key' : 'key white-key';
+                key.dataset.note = keyData.note;
+                key.dataset.kb = keyData.kb;
+
+                key.innerHTML = `
+                    <div class="key-label">
+                        ${keyData.display}
+                        <div class="kb-label">${keyData.kb.toUpperCase()}</div>
+                    </div>
+                `;
+
+                key.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    triggerNote(keyData.note);
+                });
+
+                // Touch support
+                key.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    triggerNote(keyData.note);
+                });
+
+                piano.appendChild(key);
+            });
+        }
+
+        // ====================== KEYBOARD INPUT ======================
+        function setupKeyboard() {
+            const kbMap = {};
+            pianoKeysData.forEach(k => kbMap[k.kb] = k.note);
+
+            document.addEventListener('keydown', e => {
+                if (e.repeat) return;
+                const key = e.key.toLowerCase();
+                if (kbMap[key]) {
+                    e.preventDefault();
+                    triggerNote(kbMap[key]);
+                }
+            });
+        }
+
+        // ====================== TUNE AUTOPLAY ENGINE ======================
+        function stopCurrentTune() {
+            // INSTANT KILL: stop all active audio sources
+            activeSources.forEach(source => {
+                if (source && typeof source.stop === 'function') {
+                    try { source.stop(); } catch(e) {}
+                }
+                if (source && source.gain) {
+                    source.gain.cancelScheduledValues(audioContext.currentTime);
+                    source.gain.setValueAtTime(0, audioContext.currentTime);
+                }
+            });
+            activeSources = [];
+
+            // Clear pending notes
+            currentTimeouts.forEach(id => clearTimeout(id));
+            currentTimeouts = [];
+            isPlayingTune = false;
+        }
+
+        function playTuneSequence(notes) {
+            stopCurrentTune();                     // INSTANT INTERRUPT
+
+            if (notes.length === 0) return;
+
+            isPlayingTune = true;
+            let delay = 0;
+            const interval = 255; // soothing, musical tempo
+
+            notes.forEach((noteStr) => {
+                const cleanNote = noteStr.trim().toUpperCase();
+                if (!cleanNote) return;
+
+                const timeout = setTimeout(() => {
+                    if (!isPlayingTune) return;
+                    triggerNote(cleanNote);
+                }, delay);
+
+                currentTimeouts.push(timeout);
+                delay += interval;
+            });
+
+            // Cleanup flag
+            const endTimeout = setTimeout(() => {
+                isPlayingTune = false;
+                currentTimeouts = [];
+            }, delay + 800);
+            currentTimeouts.push(endTimeout);
+        }
+
+        function setupTuneFeature() {
+            const textarea = document.getElementById('tune-input');
+            const playBtn = document.getElementById('play-btn');
+            const stopBtn = document.getElementById('stop-btn');
+
+            playBtn.addEventListener('click', () => {
+                const input = textarea.value.trim();
+                if (!input) return;
+
+                // Parse: split on whitespace or newlines, support any note format
+                const notes = input
+                    .split(/[\s\n,]+/)
+                    .filter(n => n.length > 1 && /[A-G][#b]?[0-9]/i.test(n));
+
+                playTuneSequence(notes);
+            });
+
+            stopBtn.addEventListener('click', stopCurrentTune);
+
+            // Enter to play
+            textarea.addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    playBtn.click();
+                }
+            });
+        }
+
+        // ====================== INITIALIZE ======================
+        function init() {
+            buildPiano();
+            setupKeyboard();
+            setupTuneFeature();
+
+            console.log('%c✅ NOIR Premium Virtual Piano initialized • 3D glass keys • Reverb audio • Instant tune interrupt', 'color:#c9a66b; font-family:monospace; font-size:13px;');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
