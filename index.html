@@ -21,7 +21,6 @@
             background: #0a0a0a;
             color: #f0f0f0;
             font-family: 'Inter', system-ui, sans-serif;
-            overflow-x: hidden;
             min-height: 100vh;
             padding: 30px 20px 40px;
             display: flex;
@@ -42,8 +41,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 15px 30px rgba(0, 0, 0, 0.85);
-            display: inline-block;
-            transform: perspective(600px) rotateX(12deg);
         }
 
         .subtitle {
@@ -52,14 +49,12 @@
             letter-spacing: 8px;
             text-transform: uppercase;
             margin-top: 10px;
-            font-weight: 500;
         }
 
         .piano-container {
             max-width: 1380px;
             margin: 0 auto;
             perspective: 1400px;
-            perspective-origin: 50% 30%;
         }
 
         .piano {
@@ -76,7 +71,6 @@
             overflow: hidden;
             padding: 18px 18px 0;
             transform: rotateX(8deg);
-            transition: transform 0.4s ease;
         }
 
         .key {
@@ -117,9 +111,6 @@
             margin-top: -210px;
             z-index: 10;
             border-radius: 0 0 10px 10px;
-            box-shadow: 
-                4px 14px 10px -4px rgba(0, 0, 0, 0.9),
-                inset 0 14px 18px rgba(255,255,255,0.18);
         }
 
         .key-label {
@@ -128,79 +119,34 @@
             padding-bottom: 22px;
             font-size: 1.25rem;
             font-weight: 600;
-            line-height: 1;
             text-transform: uppercase;
-            letter-spacing: -1px;
-            z-index: 1;
         }
 
         .kb-label {
             font-size: 0.82rem;
-            font-weight: 500;
             opacity: 0.65;
-            letter-spacing: 2px;
             margin-top: 6px;
         }
 
-        .black-key .key-label {
-            padding-bottom: 14px;
-            font-size: 1.05rem;
-        }
-
-        /* 3D Press Animation */
-        .key:active,
-        .key.pressed {
+        .key:active, .key.pressed {
             transform: translateY(18px) rotateX(6deg);
-            box-shadow: 
-                3px 6px 8px -3px rgba(0, 0, 0, 0.7),
-                inset 0 8px 14px rgba(0,0,0,0.7);
+            box-shadow: 3px 6px 8px -3px rgba(0, 0, 0, 0.7);
             filter: brightness(0.92);
         }
 
-        /* Glassmorphism Hover Effect */
         .key:hover {
             filter: brightness(1.18);
             transform: translateY(-8px) rotateX(4deg);
-            box-shadow: 
-                8px 22px 18px -8px rgba(201, 166, 107, 0.45),
-                inset 0 18px 24px rgba(255,255,255,0.95);
-        }
-
-        .white-key:hover {
-            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(232,232,232,0.85));
-            backdrop-filter: blur(14px);
-        }
-
-        .black-key:hover {
-            background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(13,13,13,0.95));
-            backdrop-filter: blur(14px);
         }
 
         .controls {
             max-width: 1380px;
             margin: 40px auto 0;
-            background: rgba(20, 20, 20, 0.85);
+            background: rgba(20, 20, 20, 0.9);
             border: 2px solid #222222;
             border-radius: 24px;
-            box-shadow: 
-                0 25px 50px -15px rgba(0, 0, 0, 0.9),
-                inset 0 2px 0 rgba(255,255,255,0.08);
             padding: 32px;
             backdrop-filter: blur(20px);
-        }
-
-        .tune-box {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            color: var(--accent);
-            text-transform: uppercase;
         }
 
         textarea {
@@ -208,26 +154,23 @@
             border: 3px solid #2a2a2a;
             border-radius: 16px;
             color: #f0f0f0;
-            font-family: 'Inter', monospace;
-            font-size: 1.15rem;
+            font-family: monospace;
+            font-size: 1.18rem;
             padding: 22px;
             resize: none;
-            height: 128px;
-            box-shadow: inset 0 8px 16px rgba(0,0,0,0.6);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 130px;
+            width: 100%;
         }
 
         textarea:focus {
-            outline: none;
             border-color: var(--accent);
-            box-shadow: 
-                0 0 0 5px rgba(201, 166, 107, 0.25),
-                inset 0 8px 16px rgba(0,0,0,0.6);
+            box-shadow: 0 0 0 5px rgba(201, 166, 107, 0.25);
         }
 
         .btn-row {
             display: flex;
             gap: 16px;
+            margin-top: 16px;
             flex-wrap: wrap;
         }
 
@@ -238,113 +181,42 @@
             border: none;
             border-radius: 14px;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 
-                0 14px 0 #1a1a1a,
-                0 18px 24px rgba(0, 0, 0, 0.7);
             background: linear-gradient(180deg, #222222 0%, #161616 100%);
             color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 14px 0 #1a1a1a, 0 18px 24px rgba(0,0,0,0.7);
+            transition: all 0.25s ease;
         }
 
         .btn-3d:hover {
             transform: translateY(-4px);
-            box-shadow: 
-                0 18px 0 #1a1a1a,
-                0 24px 30px rgba(201, 166, 107, 0.35);
-            /* Glassmorphism on hover */
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(16px);
+            box-shadow: 0 18px 0 #1a1a1a, 0 24px 30px rgba(201, 166, 107, 0.35);
         }
 
         .btn-3d:active {
             transform: translateY(9px);
-            box-shadow: 
-                0 5px 0 #1a1a1a,
-                0 10px 16px rgba(0, 0, 0, 0.6);
         }
 
         .btn-play {
             background: linear-gradient(180deg, var(--accent), #b38c4f);
-            color: #111111;
-            font-weight: 700;
-        }
-
-        .instructions {
-            margin-top: 20px;
-            font-size: 1rem;
-            opacity: 0.8;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .instructions span {
-            background: #1f1f1f;
-            padding: 6px 18px;
-            border-radius: 9999px;
-            font-family: monospace;
-            font-size: 0.95rem;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+            color: #111;
         }
 
         @media (max-width: 1100px) {
-            .piano {
-                height: 310px;
-                transform: rotateX(6deg);
-            }
-            .white-key {
-                min-width: 42px;
-                max-width: 42px;
-            }
-            .black-key {
-                width: 29px;
-                height: 186px;
-                margin-top: -172px;
-                margin-left: -14.5px;
-            }
-            .key-label {
-                font-size: 1.05rem;
-                padding-bottom: 18px;
-            }
+            .piano { height: 310px; }
+            .white-key { min-width: 42px; max-width: 42px; }
+            .black-key { width: 29px; height: 186px; margin-top: -172px; margin-left: -14.5px; }
         }
 
         @media (max-width: 640px) {
-            .piano-container {
-                overflow-x: auto;
-                padding: 0 10px;
-            }
-            .piano {
-                width: max-content;
-                margin: 0 auto;
-            }
-            .controls {
-                padding: 24px;
-            }
-            .btn-row {
-                flex-direction: column;
-            }
-        }
-
-        .playing {
-            animation: keyPulse 0.8s ease-in-out infinite alternate;
-        }
-
-        @keyframes keyPulse {
-            from { filter: brightness(1); }
-            to { filter: brightness(1.4); }
+            .piano { width: max-content; margin: 0 auto; }
+            .btn-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">NOIR</div>
-        <div class="subtitle">PREMIUM VIRTUAL PIANO • REAL • SOOTHING</div>
+        <div class="subtitle">PREMIUM VIRTUAL PIANO</div>
     </header>
 
     <div class="piano-container">
@@ -352,31 +224,16 @@
     </div>
 
     <div class="controls">
-        <div class="tune-box">
-            <h2>PASTE TUNE → AUTOPLAY</h2>
-            <textarea id="tune-input" placeholder="C4 E4 G4 B4 C5&#10;C#4 F#4 A#4 D#5&#10;or any valid note (C4, Db5, etc.)"></textarea>
-            
-            <div class="btn-row">
-                <button id="play-btn" class="btn-3d btn-play">
-                    ▶️ PLAY TUNE
-                </button>
-                <button id="stop-btn" class="btn-3d">
-                    ⏹ INSTANT STOP
-                </button>
-            </div>
-        </div>
-
-        <div class="instructions">
-            <strong>PLAY WITH:</strong>
-            <span>MOUSE CLICK on keys</span>
-            <span>KEYBOARD (letters printed on keys)</span>
-            <span>3D glass-hover • High-fidelity reverb</span>
-            <span>New tune instantly kills previous (zero ghost notes)</span>
+        <h2 style="color: var(--accent); margin-bottom: 12px;">PASTE TUNE &amp; AUTOPLAY</h2>
+        <textarea id="tune-input" placeholder="Example:\nC4 D4 E4 F4 G4 A4 B4 C5\n\nOr with sharps:\nC#4 D#4 F#4 G#4 A#4"></textarea>
+        
+        <div class="btn-row">
+            <button id="play-btn" class="btn-3d btn-play">▶️ PLAY TUNE</button>
+            <button id="stop-btn" class="btn-3d">⏹ STOP</button>
         </div>
     </div>
 
     <script>
-        // ====================== PIANO KEY DATA ======================
         const pianoKeysData = [
             { note: "C4",  kb: "z", sharp: false, display: "C" },
             { note: "C#4", kb: "s", sharp: true,  display: "C#" },
@@ -405,11 +262,10 @@
             { note: "C6",  kb: "i", sharp: false, display: "C" }
         ];
 
-        // ====================== AUDIO ENGINE ======================
         let audioContext;
         let reverbNode;
         let masterGain;
-        let activeSources = [];     // For instant kill on new tune
+        let activeSources = [];
         let currentTimeouts = [];
         let isPlayingTune = false;
 
@@ -417,52 +273,45 @@
             if (audioContext) return;
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-            // Master gain
             masterGain = audioContext.createGain();
-            masterGain.gain.value = 0.92;
+            masterGain.gain.value = 0.9;
 
-            // Create high-quality reverb (hall-style, soothing)
-            const reverbLength = audioContext.sampleRate * 2.8; // 2.8s tail
+            // Simple but effective reverb
+            const reverbLength = audioContext.sampleRate * 2.2;
             const impulse = audioContext.createBuffer(2, reverbLength, audioContext.sampleRate);
-            
-            for (let channel = 0; channel < 2; channel++) {
-                const data = impulse.getChannelData(channel);
+            for (let ch = 0; ch < 2; ch++) {
+                const data = impulse.getChannelData(ch);
                 for (let i = 0; i < reverbLength; i++) {
-                    // Decaying noise for natural reverb
-                    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / reverbLength, 2.8);
+                    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / reverbLength, 3);
                 }
             }
-            
             reverbNode = audioContext.createConvolver();
             reverbNode.buffer = impulse;
 
-            // Connect reverb to master
             reverbNode.connect(masterGain);
             masterGain.connect(audioContext.destination);
         }
 
         function noteToFrequency(note) {
-            const noteNames = { 'C': 0, 'C#': 1, 'DB': 1, 'D': 2, 'D#': 3, 'EB': 3, 'E': 4, 'F': 5, 'F#': 6, 'GB': 6, 'G': 7, 'G#': 8, 'AB': 8, 'A': 9, 'A#': 10, 'BB': 10, 'B': 11 };
+            const notes = {C:0, "C#":1, Db:1, D:2, "D#":3, Eb:3, E:4, F:5, "F#":6, Gb:6, G:7, "G#":8, Ab:8, A:9, "A#":10, Bb:10, B:11};
+            const match = note.match(/^([A-G][#b]?)([0-8])$/i);
+            if (!match) return null;
             
-            const match = note.match(/^([A-G]#?|B[♭b]?)([0-8])$/i);
-            if (!match) return 440;
-            
-            let noteName = match[1].toUpperCase().replace('♭', 'B');
-            if (noteName === 'DB') noteName = 'C#';
-            if (noteName === 'EB') noteName = 'D#';
-            if (noteName === 'GB') noteName = 'F#';
-            if (noteName === 'AB') noteName = 'G#';
-            if (noteName === 'BB') noteName = 'A#';
-            
+            let name = match[1].replace('b','♭').toUpperCase();
+            if (name === 'DB') name = 'C#';
+            if (name === 'EB') name = 'D#';
+            if (name === 'GB') name = 'F#';
+            if (name === 'AB') name = 'G#';
+            if (name === 'BB') name = 'A#';
+
             const octave = parseInt(match[2]);
-            const semitone = noteNames[noteName];
-            if (semitone === undefined) return 440;
-            
+            const semitone = notes[name];
+            if (semitone === undefined) return null;
+
             const midi = (octave + 1) * 12 + semitone;
             return 440 * Math.pow(2, (midi - 69) / 12);
         }
 
-        // High-fidelity piano note with realistic envelope + slight reverb
         function playNote(noteName, duration = 480) {
             initAudio();
             const ctx = audioContext;
@@ -470,68 +319,44 @@
             const freq = noteToFrequency(noteName);
             if (!freq) return;
 
-            // Primary oscillator (warm triangle)
             const osc = ctx.createOscillator();
-            osc.frequency.setValueAtTime(freq, now);
             osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
 
-            // Richness layer (slightly detuned triangle)
             const osc2 = ctx.createOscillator();
-            osc2.frequency.setValueAtTime(freq * 1.0035, now);
             osc2.type = 'triangle';
+            osc2.frequency.setValueAtTime(freq * 1.003, now);
 
-            // Low-pass filter for body
             const filter = ctx.createBiquadFilter();
             filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(3200, now);
-            filter.Q.setValueAtTime(0.6, now);
+            filter.frequency.setValueAtTime(3400, now);
 
-            // Dry / Wet split
-            const dryGain = ctx.createGain();
-            dryGain.gain.setValueAtTime(0.72, now);
-
-            const wetGain = ctx.createGain();
-            wetGain.gain.setValueAtTime(0.28, now);   // subtle reverb
-
-            // Master envelope for this note
             const envelope = ctx.createGain();
             envelope.gain.setValueAtTime(0, now);
+            envelope.gain.linearRampToValueAtTime(0.95, now + 0.008);
+            envelope.gain.linearRampToValueAtTime(0.35, now + 0.15);
+            envelope.gain.exponentialRampToValueAtTime(0.001, now + duration/1000);
 
-            // Connect chain
             osc.connect(filter);
             osc2.connect(filter);
-            filter.connect(dryGain);
-            filter.connect(reverbNode);
-            dryGain.connect(envelope);
-            wetGain.connect(envelope);
+            filter.connect(envelope);
+            envelope.connect(reverbNode);
             envelope.connect(masterGain);
 
-            // Realistic piano ADSR (fast attack, smooth decay, soothing release)
-            envelope.gain.linearRampToValueAtTime(1, now + 0.006);      // attack
-            envelope.gain.linearRampToValueAtTime(0.38, now + 0.14);    // decay
-            envelope.gain.exponentialRampToValueAtTime(0.001, now + duration / 1000);
-
-            // Start & schedule stop
             osc.start(now);
             osc2.start(now);
-            osc.stop(now + duration / 1000 + 1.2);
-            osc2.stop(now + duration / 1000 + 1.2);
+            osc.stop(now + duration/1000 + 1);
+            osc2.stop(now + duration/1000 + 1);
 
-            // Store for instant kill capability
             activeSources.push(osc, osc2, envelope);
-
-            return { osc, osc2, envelope };
         }
 
         function pressKeyVisual(note) {
             const keys = document.querySelectorAll(`[data-note="${note}"]`);
-            if (keys.length) {
-                const key = keys[0];
-                key.classList.add('pressed', 'playing');
-                setTimeout(() => {
-                    key.classList.remove('pressed', 'playing');
-                }, 220);
-            }
+            keys.forEach(key => {
+                key.classList.add('pressed');
+                setTimeout(() => key.classList.remove('pressed'), 180);
+            });
         }
 
         function triggerNote(note) {
@@ -539,102 +364,81 @@
             pressKeyVisual(note);
         }
 
-        // ====================== BUILD PIANO ======================
         function buildPiano() {
             const piano = document.getElementById('piano');
             piano.innerHTML = '';
 
-            pianoKeysData.forEach(keyData => {
+            pianoKeysData.forEach(k => {
                 const key = document.createElement('div');
-                key.className = keyData.sharp ? 'key black-key' : 'key white-key';
-                key.dataset.note = keyData.note;
-                key.dataset.kb = keyData.kb;
+                key.className = k.sharp ? 'key black-key' : 'key white-key';
+                key.dataset.note = k.note;
 
                 key.innerHTML = `
                     <div class="key-label">
-                        ${keyData.display}
-                        <div class="kb-label">${keyData.kb.toUpperCase()}</div>
+                        ${k.display}<br>
+                        <span style="font-size:0.8rem; opacity:0.7;">${k.kb.toUpperCase()}</span>
                     </div>
                 `;
 
-                key.addEventListener('mousedown', (e) => {
-                    e.preventDefault();
-                    triggerNote(keyData.note);
-                });
-
-                // Touch support
-                key.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    triggerNote(keyData.note);
-                });
+                key.addEventListener('mousedown', () => triggerNote(k.note));
+                key.addEventListener('touchstart', (e) => { e.preventDefault(); triggerNote(k.note); });
 
                 piano.appendChild(key);
             });
         }
 
-        // ====================== KEYBOARD INPUT ======================
         function setupKeyboard() {
-            const kbMap = {};
-            pianoKeysData.forEach(k => kbMap[k.kb] = k.note);
+            const map = {};
+            pianoKeysData.forEach(k => map[k.kb] = k.note);
 
             document.addEventListener('keydown', e => {
                 if (e.repeat) return;
-                const key = e.key.toLowerCase();
-                if (kbMap[key]) {
-                    e.preventDefault();
-                    triggerNote(kbMap[key]);
-                }
+                const note = map[e.key.toLowerCase()];
+                if (note) triggerNote(note);
             });
         }
 
-        // ====================== TUNE AUTOPLAY ENGINE ======================
+        // FIXED TUNE PARSING
+        function parseTune(input) {
+            if (!input) return [];
+            
+            return input
+                .toUpperCase()
+                .split(/[\s\n,]+/)           // split by space, newline, or comma
+                .map(n => n.trim())
+                .filter(n => /^[A-G][#B]?[0-8]$/i.test(n));  // improved regex
+        }
+
         function stopCurrentTune() {
-            // INSTANT KILL: stop all active audio sources
             activeSources.forEach(source => {
                 if (source && typeof source.stop === 'function') {
                     try { source.stop(); } catch(e) {}
                 }
                 if (source && source.gain) {
-                    source.gain.cancelScheduledValues(audioContext.currentTime);
-                    source.gain.setValueAtTime(0, audioContext.currentTime);
+                    source.gain.cancelScheduledValues(audioContext ? audioContext.currentTime : 0);
                 }
             });
             activeSources = [];
-
-            // Clear pending notes
-            currentTimeouts.forEach(id => clearTimeout(id));
+            currentTimeouts.forEach(clearTimeout);
             currentTimeouts = [];
             isPlayingTune = false;
         }
 
         function playTuneSequence(notes) {
-            stopCurrentTune();                     // INSTANT INTERRUPT
-
+            stopCurrentTune();
             if (notes.length === 0) return;
 
             isPlayingTune = true;
             let delay = 0;
-            const interval = 255; // soothing, musical tempo
+            const interval = 260;
 
-            notes.forEach((noteStr) => {
-                const cleanNote = noteStr.trim().toUpperCase();
-                if (!cleanNote) return;
-
+            notes.forEach(note => {
                 const timeout = setTimeout(() => {
-                    if (!isPlayingTune) return;
-                    triggerNote(cleanNote);
+                    if (isPlayingTune) triggerNote(note);
                 }, delay);
-
                 currentTimeouts.push(timeout);
                 delay += interval;
             });
-
-            // Cleanup flag
-            const endTimeout = setTimeout(() => {
-                isPlayingTune = false;
-                currentTimeouts = [];
-            }, delay + 800);
-            currentTimeouts.push(endTimeout);
         }
 
         function setupTuneFeature() {
@@ -643,20 +447,17 @@
             const stopBtn = document.getElementById('stop-btn');
 
             playBtn.addEventListener('click', () => {
-                const input = textarea.value.trim();
-                if (!input) return;
-
-                // Parse: split on whitespace or newlines, support any note format
-                const notes = input
-                    .split(/[\s\n,]+/)
-                    .filter(n => n.length > 1 && /[A-G][#b]?[0-9]/i.test(n));
-
-                playTuneSequence(notes);
+                const notes = parseTune(textarea.value);
+                if (notes.length > 0) {
+                    playTuneSequence(notes);
+                } else {
+                    alert("Please enter valid notes like: C4 D4 E4 F4 G4");
+                }
             });
 
             stopBtn.addEventListener('click', stopCurrentTune);
 
-            // Enter to play
+            // Press Enter to play
             textarea.addEventListener('keydown', e => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -665,16 +466,13 @@
             });
         }
 
-        // ====================== INITIALIZE ======================
-        function init() {
+        // Initialize
+        window.onload = () => {
             buildPiano();
             setupKeyboard();
             setupTuneFeature();
-
-            console.log('%c✅ NOIR Premium Virtual Piano initialized • 3D glass keys • Reverb audio • Instant tune interrupt', 'color:#c9a66b; font-family:monospace; font-size:13px;');
-        }
-
-        window.onload = init;
+            console.log('%cNOIR Virtual Piano - Tune playback fixed ✅', 'color:#c9a66b; font-size:14px');
+        };
     </script>
 </body>
 </html>
